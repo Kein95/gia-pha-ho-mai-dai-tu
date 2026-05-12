@@ -267,11 +267,19 @@ export default function MemberDetailContent({
                             person.death_month,
                             person.death_day,
                           )
-                        : getSolarDateString(
-                            person.death_lunar_year,
-                            person.death_lunar_month,
-                            person.death_lunar_day,
-                          ) || "Chưa rõ"}
+                        : (person.death_lunar_day ||
+                          person.death_lunar_month ||
+                          person.death_lunar_year)
+                          ? getSolarDateString(
+                              person.death_lunar_year,
+                              person.death_lunar_month,
+                              person.death_lunar_day,
+                            ) || formatDisplayDate(
+                              person.death_lunar_year,
+                              person.death_lunar_month,
+                              person.death_lunar_day,
+                            )
+                          : "Chưa rõ"}
                     </p>
                     {(person.death_year ||
                       person.death_month ||

@@ -50,9 +50,14 @@ export default function LandingHero({ siteName }: LandingHeroProps) {
             <span className="block">{siteName}</span>
           </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-stone-600 max-w-2xl mx-auto leading-relaxed font-light">
-            Gìn giữ và lưu truyền những giá trị, cội nguồn và truyền thống tốt
-            đẹp của dòng họ cho các thế hệ mai sau.
+          {/* Câu đối gia phả */}
+          <div className="flex flex-col items-center gap-1 text-amber-800/80 font-serif text-base sm:text-lg tracking-widest">
+            <span>Tổ Tông Công Đức Thiên Niên Thịnh</span>
+            <span>Hiếu Tôn Hiền Vạn Đại Vinh</span>
+          </div>
+
+          <p className="text-stone-500 text-sm max-w-xl mx-auto leading-relaxed">
+            Duyên Hưng - Nam Ninh - Ninh Bình &nbsp;|&nbsp; Thực hiện: Mai Đăng Hải &nbsp;|&nbsp; Hoàn thành: 10/2025
           </p>
         </motion.div>
 

@@ -29,10 +29,18 @@ export default function AboutPage() {
             </div>
 
             <div className="max-w-none">
+              {/* Câu đối gia phả */}
+              <div className="text-center mb-8 py-6 bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl border border-amber-200/50">
+                <p className="font-serif text-amber-900 text-lg sm:text-xl tracking-[0.2em] leading-loose">
+                  Tổ Tông Công Đức Thiên Niên Thịnh<br/>
+                  Hiếu Tôn Hiền Vạn Đại Vinh
+                </p>
+              </div>
+
               <p className="text-stone-600 leading-relaxed text-[15px] mb-8">
                 <strong className="text-stone-800">Gia Phả Họ Mai Đại Từ</strong>{" "}
-                — ứng dụng quản lý gia phả họ Mai Đại Từ, Duyên Hưng, Nam Ninh,
-                Ninh Bình. Dữ liệu số hóa từ sơ đồ gốc do Mai Đăng Hải thực hiện
+                — Duyên Hưng, Nam Ninh, Ninh Bình (Duyên Hưng - Nam Lợi - Nam Trực - Nam Định cũ).
+                Dữ liệu số hóa từ sơ đồ gốc do Mai Đăng Hải thực hiện
                 (tháng 10/2025). Xây dựng dựa trên mã nguồn mở{" "}
                 <strong className="text-stone-800">giapha-os</strong> của{" "}
                 <a
