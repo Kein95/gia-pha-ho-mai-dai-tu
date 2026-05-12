@@ -86,19 +86,6 @@ export default function AboutPage() {
                 </ul>
               </div>
 
-              <div className="mt-8 mb-4 border-t border-stone-100 pt-8 flex items-center gap-3">
-                <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
-                  <Mail className="size-5" />
-                </div>
-                <h2 className="text-xl font-bold text-stone-900">
-                  Liên hệ & Góp ý
-                </h2>
-              </div>
-
-              <p className="text-stone-600 leading-relaxed text-[15px] mb-8">
-                Nếu có thắc mắc, đề xuất, hoặc báo lỗi — liên hệ quản trị viên
-                hệ thống.
-              </p>
             </div>
           </div>
         </motion.div>
