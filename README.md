@@ -4,8 +4,6 @@ Repository: [github.com/Kein95/gia-pha-ho-mai-dai-tu](https://github.com/Kein95/
 
 Ứng dụng quản lý gia phả họ Mai Đại Từ — Duyên Hưng, Nam Ninh, Ninh Bình. Dữ liệu số hóa từ sơ đồ gốc (khổ 107x180cm) do Mai Đăng Hải thực hiện, tháng 10/2025.
 
-Fork từ dự án [Gia Phả Họ Hồ - Kỳ Sơn](https://github.com/Kein95/gia-pha-ho-ho-ky-son), vốn dựa trên mã nguồn mở **[giapha-os](https://github.com/homielab/giapha-os)** của [@homielab](https://github.com/homielab).
-
 ## Các tính năng chính
 
 - **Sơ đồ trực quan**: Cây (Tree) và Sơ đồ tư duy (Mindmap)
