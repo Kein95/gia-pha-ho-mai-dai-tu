@@ -54,7 +54,7 @@ bun run db:push
 # Tạo admin
 bun run scripts/seed-admin.ts <email> <password> "<tên>"
 
-# Import gia phả (~186 thành viên, 11 đời)
+# Import gia phả (~183 thành viên, 11 đời)
 bun run seed:mai
 
 # Chạy dev

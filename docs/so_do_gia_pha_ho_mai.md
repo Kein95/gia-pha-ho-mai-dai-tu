@@ -298,6 +298,7 @@ flowchart TD
   N9159 --> N9229
   N9161 --> N9233
   N9161 --> N9234
+  N9162 --> N9237
   N9163 --> N9238
   N9164 --> N9241
   N9165 --> N9243
@@ -342,7 +343,7 @@ flowchart TD
   N9228 --> N9321
   N9229 --> N9323
   N9233 --> N9325
-  N9234 --> N9325
+  N9234 --> N9326
   N9234 --> N9329
   N9237 --> N9331
   N9238 --> N9333
@@ -365,9 +366,9 @@ flowchart TD
   N9264 --> N9367
   N9286 --> N9369
   N9286 --> N9370
-  N9298 --> N9374
+  N9298 --> N9373
   N9301 --> N9374
-  N9303 --> N9403
+  N9303 --> N9404
   N9305 --> N9403
   N9309 --> N9377
   N9309 --> N9378
@@ -375,7 +376,7 @@ flowchart TD
   N9319 --> N9383
   N9321 --> N9385
   N9323 --> N9387
-  N9325 --> N9387
+  N9325 --> N9388
   classDef root fill:#fff7cc,stroke:#b45309,stroke-width:2px,color:#111;
   classDef branch fill:#fffdf0,stroke:#d97706,color:#111;
   class ROOT1,ROOT2 root;
@@ -700,6 +701,7 @@ flowchart TD
 | CỤ TÚ | BẮC |
 | CỤ THUẦN | TỊNH |
 | CỤ THUẦN | NHÂN |
+| CỤ THUẤN | THIỆN |
 | CỤ THUÂN | THÀNH |
 | CỤ THÚY | LỰC |
 | CỤ TÌNH | TÂN |
@@ -744,7 +746,7 @@ flowchart TD
 | HOẠCH | LONG |
 | BẮC | BỘ |
 | TỊNH | NGUYÊN |
-| NHÂN | NGUYÊN |
+| NHÂN | THUẬN |
 | NHÂN | KHẢI |
 | THIỆN | KHÔI |
 | THÀNH | KIÊN |
@@ -767,9 +769,9 @@ flowchart TD
 | KHƯƠNG | KHOA |
 | NAM | PHƯỚC |
 | NAM | LỘC |
-| VIỆT | KHÔI |
+| VIỆT | ĐẠT |
 | THƯ | KHÔI |
-| PHÚC | HẢI |
+| PHÚC | QUANG |
 | LINH | HẢI |
 | BÌNH | LONG |
 | BÌNH | DƯƠNG |
@@ -777,4 +779,4 @@ flowchart TD
 | DIỆN | ANH |
 | LONG | HƯNG |
 | BỘ | ĐỨC PHÚC |
-| NGUYÊN | ĐỨC PHÚC |
+| NGUYÊN | TIẾN PHÚC |
