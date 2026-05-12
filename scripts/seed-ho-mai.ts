@@ -5,8 +5,11 @@
  * TRUNCATES persons and relationships tables before insert (idempotent).
  * Wraps all inserts in a transaction for atomicity.
  *
+ * Safety guard: aborts if persons table already has data (use --force to override).
+ *
  * Usage:
- *   bun scripts/seed-ho-mai.ts
+ *   bun scripts/seed-ho-mai.ts          # first-time only (empty DB)
+ *   bun scripts/seed-ho-mai.ts --force  # re-seed (DESTROYS existing data)
  */
 
 import { config } from "dotenv";
@@ -470,13 +473,32 @@ async function main() {
   console.log("=== Mai Family Genealogy Seed Script ===");
   console.log(`Persons to insert: ${personsData.length}`);
   console.log(`Relationships to insert: ${relationshipsData.length}`);
+
+  // Safety guard: abort if persons table already has data
+  const forceMode = process.argv.includes("--force");
+  const countResult = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(schema.persons);
+  const personCount = countResult[0]?.count ?? 0;
+
+  if (personCount > 0 && !forceMode) {
+    console.error(
+      `\nABORTED: persons table has ${personCount} rows.\n` +
+      `--force will DESTROY: persons, relationships, person_details_private.\n` +
+      `  bun scripts/seed-ho-mai.ts --force`
+    );
+    process.exit(1);
+  }
+  if (personCount > 0 && forceMode) {
+    console.warn(`\nWARNING: Force re-seeding — will DESTROY ${personCount} persons + all relationships + private details.\n`);
+  }
+
   console.log();
 
   await db.transaction(async (tx) => {
-    // 1. Truncate tables (idempotent)
-    console.log("Truncating persons and relationships tables...");
-    await tx.execute(sql`TRUNCATE TABLE relationships CASCADE`);
-    await tx.execute(sql`TRUNCATE TABLE persons CASCADE`);
+    // 1. Truncate tables (idempotent) — CASCADE covers relationships + person_details_private
+    console.log("Truncating persons, relationships, person_details_private...");
+    await tx.execute(sql`TRUNCATE TABLE persons, relationships, person_details_private CASCADE`);
     console.log("Tables truncated.");
 
     // 2. Insert persons in batches of 50

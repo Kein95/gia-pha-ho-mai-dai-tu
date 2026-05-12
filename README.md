@@ -44,17 +44,21 @@ git clone https://github.com/Kein95/gia-pha-ho-mai-dai-tu.git
 cd gia-pha-ho-mai-dai-tu
 bun install
 
-# Pull env vars
+# Pull env vars trực tiếp từ Vercel
 npx vercel link
 npx vercel env pull .env.local
 
-# Push schema
+# Push schema (chỉ lần đầu; sau đó dùng db:migrate)
 bun run db:push
 
-# Tạo admin
-bun run scripts/seed-admin.ts <email> <password> "<tên>"
+# Tạo admin — thêm vào .env.local:
+#   ADMIN_EMAIL=your@email.com
+#   ADMIN_PASSWORD=<strong-password>
+#   ADMIN_NAME=Admin
+bun scripts/seed-admin.ts
 
 # Import gia phả (~183 thành viên, 11 đời)
+# ⚠️ Tự abort nếu DB đã có data — dùng --force để re-seed
 bun run seed:mai
 
 # Chạy dev
@@ -64,6 +68,8 @@ bun run dev
 ### Bước 4 — Deploy
 
 Vercel tự deploy mỗi push lên `main`.
+
+Xem thêm: [docs/deployment-guide.md](docs/deployment-guide.md)
 
 ---
 

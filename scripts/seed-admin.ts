@@ -3,8 +3,10 @@
  *
  * Usage:
  *   bun scripts/seed-admin.ts <email> <password> [name]
+ *   Or set ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME in .env.local
  *
  * Reads DB connection from .env.local (POSTGRES_URL).
+ * Env vars take priority over CLI args (prevents password leak in shell history).
  * If the email already exists, updates role→admin and is_active→true.
  * If it does not exist, inserts a new user.
  */
@@ -21,10 +23,17 @@ import { eq } from "drizzle-orm";
 const db = drizzle(sql, { schema: { users } });
 
 async function main() {
-  const [, , email, password, name] = process.argv;
+  // Env vars take priority over CLI args (prevents password in shell history)
+  const email = process.env.ADMIN_EMAIL || process.argv[2];
+  const password = process.env.ADMIN_PASSWORD || process.argv[3];
+  const name = process.env.ADMIN_NAME || process.argv[4];
 
   if (!email || !password) {
-    console.error("Usage: bun scripts/seed-admin.ts <email> <password> [name]");
+    console.error(
+      "Missing credentials.\n" +
+      "Usage: bun scripts/seed-admin.ts <email> <password> [name]\n" +
+      "Or set ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME in .env.local"
+    );
     process.exit(1);
   }
 
@@ -39,6 +48,7 @@ async function main() {
 
   if (existing.length > 0) {
     // Update existing user to admin + active
+    console.warn(`WARNING: Resetting password for existing user "${email}"`);
     await db
       .update(users)
       .set({
@@ -50,7 +60,7 @@ async function main() {
       })
       .where(eq(users.email, email));
 
-    console.log(`Updated existing user "${email}" → role=admin, is_active=true`);
+    console.log(`Updated existing user "${email}" → role=admin, is_active=true, password=RESET`);
   } else {
     // Insert new admin user
     const id = crypto.randomUUID();
