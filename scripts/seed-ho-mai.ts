@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CLI seed script: import Mai family genealogy data into Neon Postgres via Drizzle ORM.
  *
  * Reads DB connection from .env.local (POSTGRES_URL).
@@ -38,7 +38,7 @@ interface RelationshipSeed {
 }
 
 // ---------------------------------------------------------------------------
-// Persons data — all 186 persons from the Mai family genealogy
+// Persons data — all 183 persons from the Mai family genealogy
 // Key format for dedup: "fullName|generation"
 // Prefixes removed: "Cao cao tổ", "CỤ TỔ", "CÔ TỔ", "CỤ"
 // All persons are historical figures: isDeceased=true
@@ -377,6 +377,7 @@ const relationshipsData: RelationshipSeed[] = [
   { parentKey: "Tú|8", childKey: "Bắc|9" },
   { parentKey: "Thuần|8", childKey: "Tịnh|9" },
   { parentKey: "Thuần|8", childKey: "Nhân|9" },
+  { parentKey: "Thuấn|8", childKey: "Thiện|9" },
   { parentKey: "Thuân|8", childKey: "Thành|9" },
   { parentKey: "Thúy|8", childKey: "Lực|9" },
   { parentKey: "Tình|8", childKey: "Tân|9" },
@@ -423,7 +424,7 @@ const relationshipsData: RelationshipSeed[] = [
   { parentKey: "Hoạch|9", childKey: "Long (2)|10" },
   { parentKey: "Bắc|9", childKey: "Bộ|10" },
   { parentKey: "Tịnh|9", childKey: "Nguyên|10" },
-  { parentKey: "Nhân|9", childKey: "Nguyên|10" },
+  { parentKey: "Nhân|9", childKey: "Thuận|10" },
   { parentKey: "Nhân|9", childKey: "Khải|10" },
   { parentKey: "Thiện|9", childKey: "Khôi|10" },
   { parentKey: "Thành|9", childKey: "Kiên|10" },
@@ -448,9 +449,9 @@ const relationshipsData: RelationshipSeed[] = [
   { parentKey: "Khương|10", childKey: "Khoa|11" },
   { parentKey: "Nam|10", childKey: "Phước|11" },
   { parentKey: "Nam|10", childKey: "Lộc|11" },
-  { parentKey: "Việt|10", childKey: "Khôi|11" },
+  { parentKey: "Việt|10", childKey: "Đạt|11" },
   { parentKey: "Thư|10", childKey: "Khôi|11" },
-  { parentKey: "Phúc|10", childKey: "Hải (2)|11" },
+  { parentKey: "Phúc|10", childKey: "Quang|11" },
   { parentKey: "Linh (2)|10", childKey: "Hải (2)|11" },
   { parentKey: "Bình (2)|10", childKey: "Long|11" },
   { parentKey: "Bình (2)|10", childKey: "Dương|11" },
@@ -458,7 +459,7 @@ const relationshipsData: RelationshipSeed[] = [
   { parentKey: "Diện|10", childKey: "Anh|11" },
   { parentKey: "Long (2)|10", childKey: "Hưng|11" },
   { parentKey: "Bộ|10", childKey: "Đức Phúc|11" },
-  { parentKey: "Nguyên|10", childKey: "Đức Phúc|11" },
+  { parentKey: "Nguyên|10", childKey: "Tiến Phúc|11" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -474,8 +475,8 @@ async function main() {
   await db.transaction(async (tx) => {
     // 1. Truncate tables (idempotent)
     console.log("Truncating persons and relationships tables...");
-    await tx.run(sql`TRUNCATE TABLE relationships CASCADE`);
-    await tx.run(sql`TRUNCATE TABLE persons CASCADE`);
+    await tx.execute(sql`TRUNCATE TABLE relationships CASCADE`);
+    await tx.execute(sql`TRUNCATE TABLE persons CASCADE`);
     console.log("Tables truncated.");
 
     // 2. Insert persons in batches of 50
