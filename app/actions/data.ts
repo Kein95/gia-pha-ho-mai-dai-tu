@@ -6,6 +6,7 @@ import { requireAdmin } from "@/lib/auth/permissions";
 import { Relationship } from "@/types";
 import { asc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/lib/activity-logger";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -173,6 +174,11 @@ export async function exportData(
       );
     }
 
+    await logActivity({
+      action: "EXPORT_DATA",
+      detail: `Exported ${exportPersons.length} persons, ${exportRels.length} relationships`,
+    });
+
     return {
       version: 2,
       timestamp: new Date().toISOString(),
@@ -258,6 +264,11 @@ export async function importData(importPayload: {
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/members");
     revalidatePath("/dashboard/data");
+
+    await logActivity({
+      action: "IMPORT_DATA",
+      detail: `Imported ${sanitizedPersons.length} persons, ${sanitizedRels.length} relationships`,
+    });
 
     return {
       success: true,

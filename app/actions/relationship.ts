@@ -10,6 +10,7 @@ import {
 import { eq, ilike, ne, desc, or, and, inArray, asc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { Person } from "@/types";
+import { logActivity } from "@/lib/activity-logger";
 
 // ─── Read helpers ─────────────────────────────────────────────────────────────
 
@@ -196,6 +197,10 @@ export async function addRelationship(input: {
       note: input.note ?? null,
     });
     revalidatePath("/dashboard/members");
+    await logActivity({
+      action: "CREATE_RELATIONSHIP", targetType: "relationship",
+      detail: `${input.type}: ${input.personA} ↔ ${input.personB}`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Error adding relationship:", e);
@@ -208,6 +213,10 @@ export async function deleteRelationship(relId: string) {
   try {
     await db.delete(relationships).where(eq(relationships.id, relId));
     revalidatePath("/dashboard/members");
+    await logActivity({
+      action: "DELETE_RELATIONSHIP", targetType: "relationship", targetId: relId,
+      detail: `Deleted relationship ${relId}`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Error deleting relationship:", e);
@@ -262,6 +271,10 @@ export async function createPersonWithRelationship(input: {
     }
 
     revalidatePath("/dashboard/members");
+    await logActivity({
+      action: "CREATE_PERSON", targetType: "person", targetId: newId,
+      detail: `Created ${input.fullName} + linked (${input.type})`,
+    });
     return { success: true, newPersonId: newId };
   } catch (e) {
     console.error("Error in createPersonWithRelationship:", e);
@@ -344,6 +357,12 @@ export async function upsertPerson(input: {
 
     revalidatePath("/dashboard/members");
     revalidatePath(`/dashboard/members/${personId}`);
+    await logActivity({
+      action: id ? "UPDATE_PERSON" : "CREATE_PERSON",
+      targetType: "person",
+      targetId: personId,
+      detail: `${id ? "Updated" : "Created"}: ${input.fullName}`,
+    });
     return { success: true, personId };
   } catch (e) {
     console.error("Error upserting person:", e);
@@ -371,6 +390,10 @@ export async function applyLineageUpdates(
     }
     revalidatePath("/dashboard/lineage");
     revalidatePath("/dashboard/members");
+    await logActivity({
+      action: "UPDATE_LINEAGE", targetType: "person",
+      detail: `Batch lineage update: ${updates.length} persons`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Error applying lineage updates:", e);
@@ -449,6 +472,11 @@ export async function upsertCustomEvent(input: {
     }
 
     revalidatePath("/dashboard/events");
+    await logActivity({
+      action: input.id ? "UPDATE_EVENT" : "CREATE_EVENT",
+      targetType: "event", targetId: input.id,
+      detail: `${input.id ? "Updated" : "Created"} event: ${input.name}`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Error upserting custom event:", e);
@@ -473,6 +501,10 @@ export async function deleteCustomEvent(eventId: string) {
 
     await db.delete(customEvents).where(eq(customEvents.id, eventId));
     revalidatePath("/dashboard/events");
+    await logActivity({
+      action: "DELETE_EVENT", targetType: "event", targetId: eventId,
+      detail: `Deleted event ${eventId}`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Error deleting custom event:", e);

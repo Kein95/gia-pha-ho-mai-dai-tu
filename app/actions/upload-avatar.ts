@@ -2,6 +2,7 @@
 
 import { put } from "@vercel/blob";
 import { requireEditor } from "@/lib/auth/permissions";
+import { logActivity } from "@/lib/activity-logger";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"];
 const MAX_SIZE = 2 * 1024 * 1024; // 2MB
@@ -27,6 +28,10 @@ export async function uploadAvatar(formData: FormData) {
     const uploaded = await put(filename, file, {
       access: "public",
       contentType: file.type,
+    });
+    await logActivity({
+      action: "UPLOAD_AVATAR",
+      detail: `Uploaded avatar: ${filename}`,
     });
     return { url: uploaded.url };
   } catch (e) {

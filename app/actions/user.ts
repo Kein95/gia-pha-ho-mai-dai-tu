@@ -9,6 +9,7 @@ import {
 } from "@/lib/auth/admin-actions";
 import { UserRole } from "@/types";
 import { revalidatePath } from "next/cache";
+import { logActivity } from "@/lib/activity-logger";
 
 export async function listAdminUsers() {
   return getAdminUsers();
@@ -18,6 +19,10 @@ export async function changeUserRole(userId: string, newRole: UserRole) {
   try {
     await setUserRole(userId, newRole);
     revalidatePath("/dashboard/users");
+    await logActivity({
+      action: "USER_ROLE_CHANGE", targetType: "user", targetId: userId,
+      detail: `Changed role to ${newRole}`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Failed to change user role:", e);
@@ -29,6 +34,10 @@ export async function deleteUser(userId: string) {
   try {
     await _deleteUser(userId);
     revalidatePath("/dashboard/users");
+    await logActivity({
+      action: "USER_DELETE", targetType: "user", targetId: userId,
+      detail: `Deleted user ${userId}`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Failed to delete user:", e);
@@ -53,6 +62,10 @@ export async function adminCreateUser(formData: FormData) {
   try {
     await _adminCreateUser({ email, password, role, isActive });
     revalidatePath("/dashboard/users");
+    await logActivity({
+      action: "USER_CREATE", targetType: "user",
+      detail: `Created user ${email} (${role})`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Failed to create user:", e);
@@ -64,6 +77,10 @@ export async function toggleUserStatus(userId: string, newStatus: boolean) {
   try {
     await setUserActiveStatus(userId, newStatus);
     revalidatePath("/dashboard/users");
+    await logActivity({
+      action: "USER_TOGGLE_STATUS", targetType: "user", targetId: userId,
+      detail: `Set active=${newStatus}`,
+    });
     return { success: true };
   } catch (e) {
     console.error("Failed to change user status:", e);

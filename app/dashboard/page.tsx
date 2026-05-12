@@ -12,6 +12,7 @@ import {
   Flower2,
   GitMerge,
   Network,
+  ScrollText,
   Star,
   Users,
 } from "lucide-react";
@@ -134,6 +135,15 @@ export default async function DashboardLaunchpad() {
       bgColor: "bg-teal-50",
       borderColor: "border-teal-200/60",
       hoverColor: "hover:border-teal-400 hover:shadow-teal-100",
+    },
+    {
+      title: "Nhật ký hoạt động",
+      description: "Theo dõi thao tác quản trị và biên tập",
+      icon: <ScrollText className="size-8 text-orange-600" />,
+      href: "/dashboard/logs",
+      bgColor: "bg-orange-50",
+      borderColor: "border-orange-200/60",
+      hoverColor: "hover:border-orange-400 hover:shadow-orange-100",
     },
   ];
 

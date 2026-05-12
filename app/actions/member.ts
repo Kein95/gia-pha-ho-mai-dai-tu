@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { persons, relationships } from "@/lib/db/schema";
 import { requireEditor } from "@/lib/auth/permissions";
+import { logActivity } from "@/lib/activity-logger";
 import { eq, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -28,6 +29,10 @@ export async function deleteMemberProfile(memberId: string) {
 
   try {
     await db.delete(persons).where(eq(persons.id, memberId));
+    await logActivity({
+      action: "DELETE_PERSON", targetType: "person", targetId: memberId,
+      detail: `Deleted person ${memberId}`,
+    });
   } catch (e) {
     console.error("Error deleting person:", e);
     return { error: "Đã xảy ra lỗi khi xoá hồ sơ." };
